@@ -1,46 +1,106 @@
+// app/blog/[slug]/page.js — strona pojedynczego wpisu
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-
-async function getPost(slug) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/posts?slug=${slug}&_embed`, {
-    next: { revalidate: 3600 },
-  });
-  if (!res.ok) throw new Error('Failed to fetch post');
-  const posts = await res.json();
-  return posts.length > 0 ? posts[0] : null;
-}
+import { getPost } from '../../../lib/wp';
 
 export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  const post = await getPost(resolvedParams.slug);
-  
-  if (!post) return { title: 'Post not found' };
-  return { title: `${post.title.rendered} | Deployance` };
+  const { slug } = await params;
+  const post = await getPost(slug);
+
+  if (!post) return { title: 'Nie znaleziono wpisu | Deployance' };
+
+  return {
+    title: `${post.title} | Deployance`,
+    description: post.excerpt?.slice(0, 160) || undefined,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt?.slice(0, 160) || undefined,
+      type: 'article',
+      publishedTime: post.date,
+      images: post.image ? [post.image] : undefined,
+    },
+  };
 }
 
-export default async function SinglePost({ params }) {
-  const resolvedParams = await params;
-  const post = await getPost(resolvedParams.slug);
-  
+export default async function SinglePostPage({ params }) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+
   if (!post) notFound();
 
-  const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
-  const date = new Date(post.date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' });
+  const date = new Date(post.date).toLocaleDateString('pl-PL', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt?.slice(0, 160) || undefined,
+    datePublished: post.date,
+    image: post.image ? [post.image] : undefined,
+  };
 
   return (
-    <article className="min-h-screen py-20 px-4 sm:px-12 lg:px-24 xl:px-40 text-gray-800 dark:text-gray-200">
-      <div className="max-w-3xl mx-auto">
-        <Link href="/blog" className="text-primary hover:underline mb-8 inline-block">&larr; Wróć do bloga</Link>
-        <h1 className="text-3xl sm:text-5xl font-bold mb-6" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
-        <p className="text-gray-500 dark:text-gray-400 mb-8">{date}</p>
-        {featuredImage && (
-          <div className="relative w-full h-[400px] sm:h-[500px] mb-10 rounded-2xl overflow-hidden">
-            <Image src={featuredImage} alt={post.title.rendered} fill className="object-cover" priority />
-          </div>
-        )}
-        <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
-      </div>
+    <article className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <Link
+        href="/blog"
+        className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400"
+      >
+        <span aria-hidden="true">←</span> Wróć do bloga
+      </Link>
+
+      <header className="mb-8">
+        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+          {post.category && (
+            <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">
+              {post.category}
+            </span>
+          )}
+          <time dateTime={post.date}>{date}</time>
+          <span aria-hidden="true">·</span>
+          <span>{post.readingTime} min czytania</span>
+        </div>
+
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          {post.title}
+        </h1>
+      </header>
+
+      {post.image && (
+        <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-2xl">
+          <Image
+            src={post.image}
+            alt={post.imageAlt}
+            fill
+            priority
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </div>
+      )}
+
+      <div
+        className="prose prose-lg max-w-none dark:prose-invert prose-img:rounded-xl prose-a:text-indigo-600 dark:prose-a:text-indigo-400"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
+
+      <footer className="mt-12 border-t border-gray-200 pt-8 dark:border-white/10">
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-2 font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400"
+        >
+          <span aria-hidden="true">←</span> Zobacz pozostałe wpisy
+        </Link>
+      </footer>
     </article>
   );
 }
