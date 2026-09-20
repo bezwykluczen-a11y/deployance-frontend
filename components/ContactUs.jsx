@@ -31,14 +31,14 @@ const ContactUs = () => {
         <div>
            <p className='mb-2 text-sm font-medium'>Imię i nazwisko</p>
            <div className="flex pl-3 rounded-lg border border-gray-300 dark:border-gray-600">
-             <img src={assets.person_icon} alt="Person" />
+             <img src={assets.person_icon.src} alt="Person" />
              <input name='Imię i nazwisko' type="text" placeholder='Wypełnij pole' className='w-full p-3 text-sm outline-none bg-transparent' required/>
            </div>
         </div>
         <div>
            <p className='mb-2 text-sm font-medium'>Adres e-mail</p>
            <div className='flex pl-3 rounded-lg border border-gray-300 dark:border-gray-600'>
-             <img src={assets.email_icon} alt="Email" />
+             <img src={assets.email_icon.src} alt="Email" />
              <input name="email" type="email" placeholder='Wypełnij pole' className='w-full p-3 text-sm outline-none bg-transparent' required/>
            </div> 
         </div>
@@ -47,7 +47,7 @@ const ContactUs = () => {
            <textarea name="message" rows={8} placeholder='Wypełnij pole' className='w-full p-3 text-sm outline-none rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent' required />
         </div>
         <button type="submit" className='w-max flex gap-2 bg-primary text-white text-sm px-10 py-3 rounded-full cursor-pointer hover:scale-105 transition-all sm:col-span-2'>
-           Wyślij <img src={assets.arrow_icon} alt="Arrow" className='w-4' />
+           Wyślij <img src={assets.arrow_icon.src} alt="Arrow" className='w-4' />
         </button>
       </motion.form>
     </motion.section>

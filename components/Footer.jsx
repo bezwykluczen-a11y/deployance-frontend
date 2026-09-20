@@ -33,7 +33,7 @@ const Footer = () => {
             {/* If not mounted, show nothing (or a default logo) to prevent hydration error */}
             {mounted && (
               <img 
-                src={resolvedTheme === 'dark' ? assets.logo_dark : assets.logo} 
+              src={(resolvedTheme === 'dark' ? assets.logo_dark : assets.logo).src}
                 className="w-32 sm:w-44" 
                 alt="Deployance Logo" 
               />
@@ -60,10 +60,10 @@ const Footer = () => {
       >
         <p>Copyright 2026 Deployance - All Rights Reserved</p>
         <div className="flex items-center justify-between gap-4">
-          <img src={assets.facebook_icon} alt="Facebook" />
-          <img src={assets.twitter_icon} alt="Twitter" />
-          <img src={assets.instagram_icon} alt="Instagram" />
-          <img src={assets.linkedin_icon} alt="LinkedIn" />
+          <img src={assets.facebook_icon.src} alt="Facebook" />
+          <img src={assets.twitter_icon.src} alt="Twitter" />
+          <img src={assets.instagram_icon.src} alt="Instagram" />
+          <img src={assets.linkedin_icon.src} alt="LinkedIn" />
         </div>
       </motion.div>
     </motion.footer>
