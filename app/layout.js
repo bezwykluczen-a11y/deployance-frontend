@@ -1,28 +1,31 @@
-import { ThemeProvider } from '../components/ThemeProvider'; 
+import { ThemeProvider } from '../components/ThemeProvider';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-// Make sure you import your Tailwind CSS file here!
-import './globals.css'; 
+import './globals.css';
 
 export const metadata = {
-  title: 'SEO Masters',
-  description: 'Deployance Frontend built with Next.js',
+  title: {
+    default: 'Software House | Tworzenie Aplikacji Webowych i Mobilnych | Deployance',
+    template: '%s | Deployance',
+  },
+  description:
+    'Deployance to software house tworzący aplikacje webowe i mobilne, produkty SaaS oraz dedykowane oprogramowanie dla firm. Next.js, React, Node.js, chmura i AI.',
 };
 
 export default function RootLayout({ children }) {
   return (
-    // suppressHydrationWarning is required by next-themes
-    <html lang="en" suppressHydrationWarning> 
+    // suppressHydrationWarning jest wymagany przez next-themes
+    <html lang="pl" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
-          
-          {/* This is where your page.js content will be injected */}
+
+          {/* Tu wstrzykiwana jest treść page.js */}
           <main className="min-h-screen">
             {children}
           </main>
-          
+
           <Footer />
         </ThemeProvider>
       </body>

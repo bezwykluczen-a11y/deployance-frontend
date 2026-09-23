@@ -3,16 +3,19 @@ import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 
+
 const ServiceCard = ({ service, index }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
   const divRef = useRef(null);
+
 
   const handleMouseMove = (e) => {
     const bounds = divRef.current?.getBoundingClientRect();
     if (!bounds) return;
     setPosition({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
   };
+
 
   return (
     <motion.div 
@@ -38,6 +41,7 @@ const ServiceCard = ({ service, index }) => {
             src={service.icon} 
             alt={service.title} 
             fill
+            sizes="96px"
             className="object-contain bg-white dark:bg-gray-900 p-4" // Added padding so the icon doesn't touch the edges of the circle
           />
         </div>
@@ -51,5 +55,5 @@ const ServiceCard = ({ service, index }) => {
   );
 };
 
-export default ServiceCard;
 
+export default ServiceCard;
