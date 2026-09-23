@@ -34,7 +34,7 @@ const ServiceCard = ({ service, index }) => {
         style={{ top: position.y - 150, left: position.x - 150 }} 
       />
       
-      <div className="flex items-center gap-10 p-8 hover:p-7 hover:m-1 transition-all duration-300 rounded-[10px] bg-white dark:bg-gray-900 z-10 relative h-full">
+      <div className="flex flex-col items-center gap-6 p-8 hover:p-7 hover:m-1 transition-all duration-300 rounded-[10px] bg-white dark:bg-gray-900 z-10 relative h-full text-center">
         <div className="bg-gray-100 dark:bg-gray-700 rounded-full shrink-0 relative w-20 h-20 sm:w-24 sm:h-24 m-2 overflow-hidden">
           {/* Swapped to Next.js Image component */}
           <Image 
