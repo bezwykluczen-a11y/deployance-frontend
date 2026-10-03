@@ -4,6 +4,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
+import { decodeHtml } from '../../lib/decodeHtml';
 
 const dateFormatter = new Intl.DateTimeFormat('pl-PL', {
   year: 'numeric',
@@ -15,7 +16,7 @@ function CardImage({ post, priority, sizes }) {
   if (!post.image) {
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-500 to-violet-600 text-5xl font-bold text-white/30">
-        {post.title.charAt(0)}
+        {decodeHtml(post.title).charAt(0)}
       </div>
     );
   }
@@ -48,6 +49,8 @@ function Meta({ post, date }) {
 
 export default function PostCard({ post, featured = false, priority = false }) {
   const date = dateFormatter.format(new Date(post.date));
+  const title = decodeHtml(post.title);
+  const excerpt = decodeHtml(post.excerpt);
 
   if (featured) {
     return (
@@ -66,9 +69,9 @@ export default function PostCard({ post, featured = false, priority = false }) {
               Najnowszy wpis
             </span>
             <h2 className="text-2xl font-bold tracking-tight text-gray-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400 sm:text-3xl">
-              {post.title}
+              {title}
             </h2>
-            <p className="line-clamp-3 text-gray-600 dark:text-gray-300">{post.excerpt}</p>
+            <p className="line-clamp-3 text-gray-600 dark:text-gray-300">{excerpt}</p>
             <Meta post={post} date={date} />
           </div>
         </Link>
@@ -94,10 +97,10 @@ export default function PostCard({ post, featured = false, priority = false }) {
         <div className="flex flex-1 flex-col gap-3 p-5">
           <Meta post={post} date={date} />
           <h3 className="line-clamp-2 text-lg font-semibold text-gray-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">
-            {post.title}
+            {title}
           </h3>
           <p className="line-clamp-3 flex-1 text-sm text-gray-600 dark:text-gray-400">
-            {post.excerpt}
+            {excerpt}
           </p>
           <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400">
             Czytaj dalej

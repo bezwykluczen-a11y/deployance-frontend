@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPost } from '../../../lib/wp';
+import { decodeHtml } from '../../../lib/decodeHtml';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -10,12 +11,15 @@ export async function generateMetadata({ params }) {
 
   if (!post) return { title: 'Nie znaleziono wpisu | Deployance' };
 
+  const title = decodeHtml(post.title);
+  const excerpt = decodeHtml(post.excerpt);
+
   return {
-    title: `${post.title} | Deployance`,
-    description: post.excerpt?.slice(0, 160) || undefined,
+    title: `${title} | Deployance`,
+    description: excerpt?.slice(0, 160) || undefined,
     openGraph: {
-      title: post.title,
-      description: post.excerpt?.slice(0, 160) || undefined,
+      title,
+      description: excerpt?.slice(0, 160) || undefined,
       type: 'article',
       publishedTime: post.date,
       images: post.image ? [post.image] : undefined,
@@ -29,6 +33,9 @@ export default async function SinglePostPage({ params }) {
 
   if (!post) notFound();
 
+  const title = decodeHtml(post.title);
+  const excerpt = decodeHtml(post.excerpt);
+
   const date = new Date(post.date).toLocaleDateString('pl-PL', {
     year: 'numeric',
     month: 'long',
@@ -38,8 +45,8 @@ export default async function SinglePostPage({ params }) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: post.title,
-    description: post.excerpt?.slice(0, 160) || undefined,
+    headline: title,
+    description: excerpt?.slice(0, 160) || undefined,
     datePublished: post.date,
     image: post.image ? [post.image] : undefined,
   };
@@ -71,7 +78,7 @@ export default async function SinglePostPage({ params }) {
         </div>
 
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-          {post.title}
+          {title}
         </h1>
       </header>
 
