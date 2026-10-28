@@ -12,6 +12,7 @@ const offerLinks = [
   { href: '/aplikacje-mobilne', label: 'Aplikacje mobilne' },
   { href: '/saas', label: 'SaaS' },
   { href: '/dedykowane-oprogramowanie', label: 'Dedykowane oprogramowanie' },
+  { href: '/mvp', label: 'Tworzenie MVP' },
 ];
 
 // Strzałka rozwijanego menu (obraca się przy otwarciu)
