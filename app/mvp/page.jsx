@@ -1,6 +1,5 @@
 // app/mvp/page.jsx — strona usługi: Tworzenie MVP
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react'; // jeśli nie masz lucide, zamień na zwykły znak →
 
 export const metadata = {
   title: 'Tworzenie MVP | Deployance',
@@ -104,7 +103,7 @@ export default function MvpPage() {
             href="/#contact-us"
             className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-indigo-700"
           >
-            Porozmawiajmy o Twoim MVP <ArrowRight className="h-4 w-4" />
+            Porozmawiajmy o Twoim MVP <span aria-hidden="true">→</span>
           </Link>
           <Link
             href="/blog"
@@ -206,7 +205,7 @@ export default function MvpPage() {
           href="/#contact-us"
           className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-indigo-700 transition-colors hover:bg-indigo-50"
         >
-          Skontaktuj się z nami <ArrowRight className="h-4 w-4" />
+          Skontaktuj się z nami <span aria-hidden="true">→</span>
         </Link>
       </section>
     </main>
