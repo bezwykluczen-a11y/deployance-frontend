@@ -34,7 +34,8 @@ const ThemeToggleBtn = () => {
         className="w-8 h-8 object-contain"
         width={32}
         height={32}
-        alt="Theme Toggle" 
+        alt="Theme Toggle button" 
+        priority
       />
     </button> 
   );
